@@ -1,0 +1,1 @@
+autoddvpn on openwrt
