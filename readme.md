@@ -1,8 +1,8 @@
 
 ## Aufow
-Aufow is short for autoddvpn for OpenWrt
+>Aufow is short for autoddvpn for OpenWrt
 
-此工程主要贡献来自于autoddvpn及openwrt-smarthosts-autoddvpn。主要在OpenWrt路由上实现autoddvpn的效果。
+此工程主要贡献来自于[autoddvpn](https://code.google.com/p/autoddvpn/)及[openwrt-smarthosts-autoddvpn](http://code.google.com/p/openwrt-smarthosts-autoddvpn/)。主要在OpenWrt路由上实现autoddvpn的效果。
 
 本来已经在ddwrt路由上搭好audoddvpn，在这里可以找到一些常用的脚本。不过最近从ddwrt转移到OpenWrt上，因为发现OpenWrt更加灵活，可玩度更高一些。此工程是在audoddwrt现有的代码及脚本基础上移植并应用在OpenWrt+Openvpn上的。
 
@@ -12,7 +12,7 @@ Aufow is short for autoddvpn for OpenWrt
 * OpenWrt 12.09
 * Openvpn
 
-openwrt-smarthosts-autoddvpn就是基于OpenWrt+PPPT的，
+[openwrt-smarthosts-autoddvpn](http://code.google.com/p/openwrt-smarthosts-autoddvpn/)就是基于OpenWrt+PPPT的，
 
 ### 效果
 GFW的手段主要手段及解决办法:
@@ -23,7 +23,7 @@ GFW的手段主要手段及解决办法:
 ### dnsmasq
 把那些被污染的网址，通过Google DNS查询出真实的ip地址，并把这些ip地址放入dnsmasq的配置中。
 
-在dnsmasq配置文件/etc/dnsmasq.conf中添加以下代码：
+在dnsmasq配置文件`/etc/dnsmasq.conf`中添加以下代码：
 
 	conf-dir=/etc/dnsmasq.d
 	
@@ -31,7 +31,7 @@ GFW的手段主要手段及解决办法:
 
 	mkdir /etc/dnsmasq.d
 	
-把autoddvpn.conf及gfwdomains放入此文件夹，并重启dnsmasq：
+把`autoddvpn.conf`及`gfwdomains`放入此文件夹，并重启dnsmasq：
 
 	/etc/init.d/dnsmasq restart
 此时你查询返回的就应该是正确的ip地址了lol
@@ -51,7 +51,7 @@ GFW的手段主要手段及解决办法:
 	mkdir /mnt/etc/openvpn
 >**注意**：也可以在在其他位置，不过与此有关的路径都要做相应的修改
 
-openvpn的配置在/mnt/etc/openvpn/openvpn.conf，具体参考autoddvpn
+openvpn的配置在`/mnt/etc/openvpn/openvpn.conf`，具体参考[autoddvpn](http://code.google.com/p/autoddvpn/wiki/OpenVPNManualStartUP)。注意`vpnup.sh`，`vpndown.sh`以及那些key的路径。
 
 	vi /etc/config/openvpn
 	
@@ -70,7 +70,7 @@ openvpn的配置在/mnt/etc/openvpn/openvpn.conf，具体参考autoddvpn
 	/etc/init.d/openvpn enable
 
 ### 配置防火墙
->**注意**：以下的端口与协议要跟你openvpn配置里的一致，以下用的是openvpn的默认配置：udp协议及1194端口。
+>**注意**：以下的端口与协议要跟你openvpn配置里的一致，以下用的是openvpn的默认配置：**udp**协议及**1194**端口。
 
 	vi /etc/config/firewall
 	
