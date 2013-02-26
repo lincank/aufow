@@ -11,7 +11,7 @@
 * OpenWrt 12.09
 * Openvpn
 
-[openwrt-smarthosts-autoddvpn](http://code.google.com/p/openwrt-smarthosts-autoddvpn/)就是基于OpenWrt+PPPT的，
+[openwrt-smarthosts-autoddvpn](http://code.google.com/p/openwrt-smarthosts-autoddvpn/)就是基于OpenWrt+PPTP的，
 
 ### 效果
 GFW的手段主要手段及解决办法:
@@ -73,6 +73,7 @@ openvpn的配置在`/mnt/etc/openvpn/openvpn.conf`，具体参考[autoddvpn](htt
 
 	vi /etc/config/firewall
 	
+	## 增加以下内容
 	config 'include'
         option 'path' '/etc/firewall.user'
 
@@ -83,10 +84,10 @@ openvpn的配置在`/mnt/etc/openvpn/openvpn.conf`，具体参考[autoddvpn](htt
         option 'proto' 'udp'
         option 'dest_port' '1194'
 
->**注意**：openwrt官网上这部分可能有错，这里官网上写的是`option 'path' '/etc/config/firewall.user'`，而实际上应该是`option 'path' '/etc/firewall.user'`
-
+	## 自定义防火墙内容
 	vi /etc/firewall.user
 	
+	## 增加以下内容
 	iptables -t nat -A prerouting_wan -p udp --dport 1194 -j ACCEPT
 	iptables -A input_wan -p udp --dport 1194 -j ACCEPT
 
