@@ -1,10 +1,9 @@
 
-## Aufow
->Aufow is short for autoddvpn for OpenWrt
+## Aufow -- Autoddvpn for OpenWrt
 
 此工程主要贡献来自于[autoddvpn](https://code.google.com/p/autoddvpn/)及[openwrt-smarthosts-autoddvpn](http://code.google.com/p/openwrt-smarthosts-autoddvpn/)。主要在OpenWrt路由上实现autoddvpn的效果。
 
-本来已经在ddwrt路由上搭好audoddvpn，在这里可以找到一些常用的脚本。不过最近从ddwrt转移到OpenWrt上，因为发现OpenWrt更加灵活，可玩度更高一些。此工程是在audoddwrt现有的代码及脚本基础上移植并应用在OpenWrt+Openvpn上的。
+本来已经在ddwrt路由上搭好audoddvpn，在[这里](https://github.com/lincank/autoddvpn)可以找到一些常用的脚本。不过最近从ddwrt转移到OpenWrt上，因为发现OpenWrt更加灵活，可玩度更高一些。此工程是在audoddwrt现有的代码及脚本基础上移植并应用在OpenWrt+Openvpn上的。
 
 ### 条件
 本方案在以下条件下测试通过：
@@ -70,7 +69,7 @@ openvpn的配置在`/mnt/etc/openvpn/openvpn.conf`，具体参考[autoddvpn](htt
 	/etc/init.d/openvpn enable
 
 ### 配置防火墙
->**注意**：以下的端口与协议要跟你openvpn配置里的一致，以下用的是openvpn的默认配置：**udp**协议及**1194**端口。
+>**注意**：以下的端口与协议要跟你openvpn配置里的一致，以下用的是openvpn的默认配置：`udp`协议及`1194`端口。
 
 	vi /etc/config/firewall
 	
