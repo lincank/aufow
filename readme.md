@@ -19,6 +19,23 @@ GFW的手段主要手段及解决办法:
 * DNS污染：利用OpenWrt的dnsmasq来提供dns服务，并指定使用Google DNS来查询这些受污染的网址
 * 连接重置：通过openvpn来访问这些被封的ip
 
+### 生成routes
+openvpn启动后会运行`vpnup.sh`脚本来加载需要通过vpn访问的ip，关闭时通过`vpndown.sh`来从路由表中移除这些ip。
+
+`vpnup.sh`会用到以下4个文件，确保这几个文件在`vpnup.sh`脚本所定义的`PWD`目录下。
+
+* `basic_routes`: 一些最基本的ip，如Google DNS等，这个文件基本固定不变。
+* `gfw_routes`: 从`http://autoproxy-gfwlist.googlecode.com/svn/trunk/gfwlist.txt`上获取的被GFW和谐掉的ip
+* `custom_routes`: 从自定义的`custom_domains`文件的域名中解析出来的ip
+* `except_routes`: 从自定义的`except_domains`文件的域名中解析出来的ip，这里指定某些特定的ip不通过vpn。
+
+以上4个文件中，`basic_routes`固定不变，其他3个可以通过以下方法生成：
+
+* 在`custom_domains`里加入你想要通过vpn走的域名
+* 在`excep_domains`里加入你不想要通过vpn走的域名
+* 运行 `python freeway.py`
+
+
 ### dnsmasq
 把那些被污染的网址，通过Google DNS查询出真实的ip地址，并把这些ip地址放入dnsmasq的配置中。
 
@@ -49,6 +66,14 @@ GFW的手段主要手段及解决办法:
 
 	mkdir /mnt/etc/openvpn
 >**注意**：也可以在在其他位置，不过与此有关的路径都要做相应的修改
+
+在`/etc/config/network`为openvpn加一个接口
+
+	config interface 'vpn'
+    	    option ifname 'tun0'
+        	option defaultroute '0'
+        	option peerdns '0'
+        	option proto 'none'
 
 openvpn的配置在`/mnt/etc/openvpn/openvpn.conf`，具体参考[autoddvpn](http://code.google.com/p/autoddvpn/wiki/OpenVPNManualStartUP)。注意`vpnup.sh`，`vpndown.sh`以及那些key的路径。
 
