@@ -120,6 +120,9 @@ openvpn的配置在`/mnt/etc/openvpn/openvpn.conf`，具体参考[autoddvpn](htt
 	iptables -I FORWARD -i tun+ -j ACCEPT
 	iptables -I OUTPUT -o tun+ -j ACCEPT
 	iptables -I FORWARD -o tun+ -j ACCEPT
+	
+	## 重启firewall
+	/etc/init.d/firewall restart
 
 
 大功告成！😄
