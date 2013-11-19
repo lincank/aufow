@@ -52,6 +52,15 @@ openvpn启动后会运行`vpnup.sh`脚本来加载需要通过vpn访问的ip，�
 	/etc/init.d/dnsmasq restart
 此时你查询返回的就应该是正确的ip地址了lol
 
+#### DNS设置
+网络设置中，打开LAN接口设置，可以在`使用自定义DNS服务器`中填入以下：
+
+	199.91.73.222
+	8.8.8.8
+
+分别是V2EX和Google的DNS服务器
+
+
 ### openvpn
 > **注意**：操作前确保你有足够的空间，一般8M的Flash都足够了，4M的可能就不够，可以插个USB上去
 
