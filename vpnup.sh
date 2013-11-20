@@ -10,7 +10,7 @@ EXROUTEDIR='/jffs/exroute.d'
 INFO="[INFO#${PID}]"
 DEBUG="[DEBUG#${PID}]"
 ERROR="[ERROR#${PID}]"
-PWD='/mnt/etc/openvpn'
+PWD='/etc/openvpn'
 
 echo "$INFO $(date "+%d/%b/%Y:%H:%M:%S") vpnup.sh started" >> $LOG
 for i in 1 2 3 4 5 6
@@ -91,21 +91,28 @@ export OLDGW=$OLDGW
 export PWD=$PWD
 
 
-BASIC_ROUTES="$PWD/basic_routes"
-GFW_ROUTES="$PWD/gfw_routes"
-CUSTOM_ROUTES="$PWD/custom_routes"
-EXCEPT_ROUTES="$PWD/except_routes"
+# BASIC_ROUTES="$PWD/basic_routes"
+# GFW_ROUTES="$PWD/gfw_routes"
+# CUSTOM_ROUTES="$PWD/custom_routes"
+# EXCEPT_ROUTES="$PWD/except_routes"
+ROUTES="basic_routes gfw_routes custom_routes fixed_ip_routes"
+
+for route in $ROUTES
+do
+	echo "$INFO $(date "+%d/%b/%Y:%H:%M:%S") adding ${route}, this may take a while." >> $LOG
+	grep ^route $PWD/$route  | /bin/sh -x
+done
 ##### begin batch route #####
-echo "$INFO $(date "+%d/%b/%Y:%H:%M:%S") adding the basic routes, this may take a while." >> $LOG
-grep ^route $BASIC_ROUTES  | /bin/sh -x
-
-echo "$INFO $(date "+%d/%b/%Y:%H:%M:%S") adding the gfw routes, this may take a while." >> $LOG
-grep ^route $GFW_ROUTES  | /bin/sh -x
-
-echo "$INFO $(date "+%d/%b/%Y:%H:%M:%S") adding the custom routes, this may take a while." >> $LOG
-grep ^route $CUSTOM_ROUTES  | /bin/sh -x
-
-echo "$INFO $(date "+%d/%b/%Y:%H:%M:%S") adding the except routes, this may take a while." >> $LOG
+# echo "$INFO $(date "+%d/%b/%Y:%H:%M:%S") adding the basic routes, this may take a while." >> $LOG
+# grep ^route $BASIC_ROUTES  | /bin/sh -x
+# 
+# echo "$INFO $(date "+%d/%b/%Y:%H:%M:%S") adding the gfw routes, this may take a while." >> $LOG
+# grep ^route $GFW_ROUTES  | /bin/sh -x
+# 
+# echo "$INFO $(date "+%d/%b/%Y:%H:%M:%S") adding the custom routes, this may take a while." >> $LOG
+# grep ^route $CUSTOM_ROUTES  | /bin/sh -x
+# 
+# echo "$INFO $(date "+%d/%b/%Y:%H:%M:%S") adding the except routes, this may take a while." >> $LOG
 # grep ^route $EXCEPT_ROUTES  | /bin/sh -x
 
 ##### end batch route #####

@@ -11,7 +11,7 @@ DIR='/etc/openvpn/'
 DOMAIN='http://www.everants.com/'
 
 # ash style array in this way
-FILES="custom_routes gfwdomains.conf except_routes gfw_routes";
+FILES="custom_routes gfwdomains.conf except_routes gfw_routes fixed_ip_routes fixed_ip_domain.conf";
 
 echo "*********** routes update script starts ***********"
 echo "[`date`]"

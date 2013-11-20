@@ -30,6 +30,7 @@ class Freeway(object):
         self.iplist = []
         self.subnets = []
         self.single_ips = []
+        self.fixed_domain_ip_dict = {}
 
     def fetch_from_file(self, path):
         """
@@ -102,7 +103,7 @@ class Freeway(object):
 
         :param format:
          0: format for route command, with subnet and single ips, including `-net` and `-host` options
-         1: format for dnsmasq
+         1: format for dnsmasq, e.g.: server=/facebook.com/8.8.8.8
          2: format for route command, only with `-host` option for all ips
         """
 
@@ -124,6 +125,11 @@ class Freeway(object):
         elif format == 2:
             for ip in self.iplist:
                 out.write("route add -host %s gw $OLDGW \n" % ip)
+
+        elif format == 3:
+            for domain, ip in self.fixed_domain_ip_dict.iteritems():
+                out.write('address=/%s/%s\n' % (domain, ip))
+
         else:
             print("Invalid format option")
             out.close()
@@ -152,6 +158,25 @@ class Freeway(object):
     def generate_gfw_dnsmasq_conf(self, output='gfwdomains.conf'):
         self.fetch_from_gfwlist()
         self.export(path=output, format=1)
+
+    def generate_fixed_domain_conf(self, input_path="fixed_ip_domains",
+                                       conf_output='fixed_ip_domain.conf',
+                                       routes_output='fixed_ip_routes'):
+        self.fetch_from_file(input_path)
+        r = dns.resolver.get_default_resolver()
+        r.nameservers = ['8.8.8.8']
+
+        for domain in self.domain_list:
+            result_ips = self.__resolve_domain(domain)
+            if len(result_ips) > 0:
+                self.fixed_domain_ip_dict[domain] = result_ips[0]
+                self.iplist.extend(result_ips)
+            else:
+                print("No result for: %s", domain)
+
+        self.digest_ips()
+        self.export(path=conf_output, format=3)
+        self.export(path=routes_output)
 
     # private methods
     def __is_ip_address(self, hostname=''):
@@ -279,11 +304,13 @@ if __name__ == '__main__':
     freeway.process(path='custom_domains', output=custom_routes)
     freeway.process(path='except_domains', output=except_routes, format=2)
     freeway.generate_gfw_dnsmasq_conf(output=gfwdomains_conf)
+    freeway.generate_fixed_domain_conf()
 
     print "GFW routes save to %s" % gfw_routes
     print "custom routes save to %s" % custom_routes
     print "except routes save to %s" % except_routes
     print "dnsmasq config file save to %s" % gfwdomains_conf
+
 
     t = time.time() - start_time
     print time.time() - start_time, "seconds"
