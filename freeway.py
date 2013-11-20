@@ -118,7 +118,9 @@ class Freeway(object):
                 out.write("route add -host %s gw $VPNGW \n" % ip)
         elif format == 1:
             for domain in self.domain_list:
-                out.write('server=/%s/8.8.8.8\n' % domain)
+                if self.__is_ip_address(domain):
+                    out.write('server=/%s/8.8.8.8\n' % domain)
+
         elif format == 2:
             for ip in self.iplist:
                 out.write("route add -host %s gw $OLDGW \n" % ip)
@@ -153,7 +155,8 @@ class Freeway(object):
 
     # private methods
     def __is_ip_address(self, hostname=''):
-        pat = re.compile(r'[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+')
+        pat = re.compile("^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$")
+        # pat = re.compile(r'[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+')
         if re.match(pat, hostname):
             return True
         else:
