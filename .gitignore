@@ -1,1 +1,5 @@
 /mw4530r
+custom_routes
+except_routes
+gfw_routes
+gfwdomains.conf
