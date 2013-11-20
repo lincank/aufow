@@ -118,7 +118,7 @@ class Freeway(object):
                 out.write("route add -host %s gw $VPNGW \n" % ip)
         elif format == 1:
             for domain in self.domain_list:
-                if self.__is_ip_address(domain):
+                if not self.__is_ip_address(domain):
                     out.write('server=/%s/8.8.8.8\n' % domain)
 
         elif format == 2:
